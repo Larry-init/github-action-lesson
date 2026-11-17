@@ -29,21 +29,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-  # ---------- CD: deploy only if tests pass ----------
-  deploy:
-    needs: test                              # waits for 'test' to succeed
-    if: github.ref == 'refs/heads/main'      # don't deploy from pull requests
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-      - id: deployment
-        uses: actions/deploy-pages@v4
